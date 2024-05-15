@@ -5,6 +5,7 @@ import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import java.util.Arrays;
 import java.util.List;
 
 public class ColaboradorController {
@@ -27,8 +28,8 @@ public class ColaboradorController {
 
   public void modificarColaborador(Context context) {
     Long colaboradorId = Long.parseLong(context.pathParam("id"));
-    List<FormaDeColaborarEnum> formasDeColaborar = context.bodyAsClass(List.class);
-    context.json(fachada.modificar(colaboradorId, formasDeColaborar));
+    FormaDeColaborarEnum[] formasDeColaborar = context.bodyAsClass(FormaDeColaborarEnum[].class);
+    context.json(fachada.modificar(colaboradorId, Arrays.asList(formasDeColaborar)));
   }
 
   public void getPuntuacionColaborador(Context context) {
@@ -36,8 +37,6 @@ public class ColaboradorController {
     context.json(fachada.puntos(colaboradorId));
   }
 
-  public void getPuntuacionMultiplicador(Context context) {
-  }
 
   public void modificarPuntuacionMultiplicador(Context context) {
     fachada.actualizarPesosPuntos(context.attribute("MultiplicadorPesosDonados"),

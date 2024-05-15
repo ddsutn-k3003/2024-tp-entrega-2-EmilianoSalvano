@@ -25,11 +25,9 @@ public class WebApp {
 
       app.get("/colaboradores/{id}", colaboradorController::getColaborador);
       app.post("/colaboradores", colaboradorController::crearColaborador);
-      app.put("/colaboradores/{id}", colaboradorController::modificarColaborador);
-      app.get("/colaboradores{id}/puntuacion", colaboradorController::getPuntuacionColaborador);
-
-      app.get("/colaboradores/puntuacion/Multiplicador", colaboradorController::getPuntuacionMultiplicador);
-      app.put("/colaboradores/puntuacion/Multiplicador", colaboradorController::modificarPuntuacionMultiplicador);
+      app.patch("/colaboradores/{id}", colaboradorController::modificarColaborador);
+      app.get("/colaboradores/{id}/puntos", colaboradorController::getPuntuacionColaborador);
+      app.put("/formula", colaboradorController::modificarPuntuacionMultiplicador);
     }
 
     public static ObjectMapper createObjectMapper() {
