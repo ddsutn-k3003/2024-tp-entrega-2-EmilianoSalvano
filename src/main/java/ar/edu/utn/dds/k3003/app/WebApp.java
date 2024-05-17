@@ -1,5 +1,7 @@
 package ar.edu.utn.dds.k3003.app;
 
+import ar.edu.utn.dds.k3003.client.LogisticaProxy;
+import ar.edu.utn.dds.k3003.client.ViandasProxy;
 import ar.edu.utn.dds.k3003.controller.ColaboradorController;
 import ar.edu.utn.dds.k3003.facades.dtos.Constants;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -20,6 +22,8 @@ public class WebApp {
       var app = Javalin.create().start(port);
       var objectMapper = createObjectMapper();
 
+      fachada.setViandasProxy(new ViandasProxy(objectMapper));
+      fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
 
       ColaboradorController colaboradorController = new ColaboradorController(fachada);
 
