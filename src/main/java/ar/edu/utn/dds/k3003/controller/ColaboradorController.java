@@ -4,9 +4,11 @@ import ar.edu.utn.dds.k3003.app.Fachada;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
 import ar.edu.utn.dds.k3003.model.FormasDTO;
+import ar.edu.utn.dds.k3003.model.FormulaDTO;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import java.util.List;
+import java.util.Objects;
 
 public class ColaboradorController {
   Fachada fachada;
@@ -39,11 +41,14 @@ public class ColaboradorController {
 
 
   public void modificarPuntuacionMultiplicador(Context context) {
-    fachada.actualizarPesosPuntos(context.attribute("pesosDonados"),
-                                  context.attribute("viandasDistribuidas"),
-                                  context.attribute("viandasDonadas"),
-                                  context.attribute("tarjetasRepartidas"),
-                                  context.attribute("heladerasActivas"));
+    FormulaDTO formula = context.bodyAsClass(FormulaDTO.class);
+    fachada.actualizarPesosPuntos(
+        formula.getPesosDonados(),
+        formula.getViandasDistribuidas(),
+        formula.getViandasDonadas(),
+        formula.getTarjetasRepartidas(),
+        formula.getHeladerasActivas()
+    );
     context.status(HttpStatus.OK);
   }
 }

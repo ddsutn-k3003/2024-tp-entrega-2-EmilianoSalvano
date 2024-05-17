@@ -9,6 +9,8 @@ import io.javalin.http.HttpStatus;
 import io.javalin.json.JavalinJackson;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static ar.edu.utn.dds.k3003.app.WebApp.configureObjectMapper;
 
@@ -26,26 +28,21 @@ public class ViandaTestServer {
       }));
     }).start(port);
 
-    app.get("/viandas/{qr}", ViandaTestServer::obtenerVianda);
-    app.post("/pepe", ViandaTestServer::trasladoTest);
+    app.get("/viandas/search/findByColaboradorIdAndAnioAndMes", ViandaTestServer::viandasDonadasTest);
   }
 
-  private static void trasladoTest(Context context) {
-
-    var trasladoDTO = context.bodyAsClass(TrasladoDTO.class);
-    trasladoDTO.setId(14L);
-    context.json(trasladoDTO);
-  }
-
-  private static void obtenerVianda(Context context) {
-
-    var qr = context.pathParam("qr");
-    if (qr.equals("unQRQueExiste")) {
-      var viandaDTO1 = new ViandaDTO(qr, LocalDateTime.now(), EstadoViandaEnum.PREPARADA, 2L, 1);
-      viandaDTO1.setId(14L);
-      context.json(viandaDTO1);
+  private static void viandasDonadasTest(Context context) {
+    if(context.queryParam("colaboradorId").equals("0")) {
+      List<ViandaDTO> viandas = new ArrayList<>();
+      var unaDonacion = new ViandaDTO("unQRQueExiste", LocalDateTime.now(), EstadoViandaEnum.PREPARADA, 0L, 1);
+      var otraDonacion = new ViandaDTO("otroQRQueExiste", LocalDateTime.now(), EstadoViandaEnum.PREPARADA, 0L, 1);
+      unaDonacion.setId(14L);
+      otraDonacion.setId(15L);
+      viandas.add(unaDonacion);
+      viandas.add(otraDonacion);
+      context.json(viandas);
     } else {
-      context.result("Vianda no encontrada: " + qr);
+      context.result("Vianda no encontrada");
       context.status(HttpStatus.NOT_FOUND);
     }
   }
