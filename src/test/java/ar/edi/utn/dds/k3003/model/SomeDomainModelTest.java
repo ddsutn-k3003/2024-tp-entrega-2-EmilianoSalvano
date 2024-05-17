@@ -1,4 +1,4 @@
-package ar.edi.itn.dds.k3003.model;
+package ar.edi.utn.dds.k3003.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

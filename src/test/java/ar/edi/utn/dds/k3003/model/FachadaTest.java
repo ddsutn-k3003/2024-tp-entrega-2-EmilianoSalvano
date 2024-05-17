@@ -1,4 +1,4 @@
-package ar.edi.itn.dds.k3003.model;
+package ar.edi.utn.dds.k3003.model;
 
 import ar.edu.utn.dds.k3003.facades.FachadaLogistica;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
