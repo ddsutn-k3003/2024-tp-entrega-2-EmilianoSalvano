@@ -27,6 +27,7 @@ public class WebApp {
 
       ColaboradorController colaboradorController = new ColaboradorController(fachada);
 
+      app.get("/", ctx -> ctx.result("Hello World"));
       app.get("/colaboradores/{id}", colaboradorController::getColaborador);
       app.post("/colaboradores", colaboradorController::crearColaborador);
       app.patch("/colaboradores/{id}", colaboradorController::modificarColaborador);
