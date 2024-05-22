@@ -35,8 +35,13 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaColaboradore
 
   @Override
   public ColaboradorDTO buscarXId(Long colaboradorId) throws NoSuchElementException {
-    Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
-    return colaboradorMapper.map(colaborador);
+    try {
+      Colaborador colaborador = colaboradorRepository.findById(colaboradorId);
+      return colaboradorMapper.map(colaborador);
+    }
+    catch (NoSuchElementException e) {
+      throw new NoSuchElementException("Colaborador " + colaboradorId + " no encontrado");
+    }
   }
 
   @Override

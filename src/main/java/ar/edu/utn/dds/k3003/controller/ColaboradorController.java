@@ -17,38 +17,70 @@ public class ColaboradorController {
   }
 
   public void getColaborador(Context context) {
-    Long colaboradorId = Long.parseLong(context.pathParam("id"));
-    context.json(fachada.buscarXId(colaboradorId));
+    try{
+      context.json(fachada.buscarXId(Long.parseLong(context.pathParam("id"))));
+      context.status(HttpStatus.OK);
+    }
+    catch (Exception e) {
+      context.status(HttpStatus.BAD_REQUEST);
+      context.result("Error al obtener el colaborador: " + e.getMessage());
+    }
   }
 
   public void crearColaborador(Context context) {
-    //En el context llega el DTO del colaborador a agregar, y la fachada me retorna el DTO del colaborador ya agregado
-    ColaboradorDTO colaboradorDTOAgregado = fachada.agregar(context.bodyAsClass(ColaboradorDTO.class));
-    context.json(colaboradorDTOAgregado);
-    context.status(HttpStatus.CREATED);
+    try {
+      //En el context llega el DTO del colaborador a agregar, y la fachada me retorna el DTO del colaborador ya agregado
+      ColaboradorDTO colaboradorDTOAgregado = fachada.agregar(context.bodyAsClass(ColaboradorDTO.class));
+      context.json(colaboradorDTOAgregado);
+      context.status(HttpStatus.CREATED);
+    }
+    catch (Exception e) {
+      context.status(HttpStatus.BAD_REQUEST);
+      context.result("Error al agregar el colaborador: " + e.getMessage());
+    }
   }
 
   public void modificarColaborador(Context context) {
-    Long colaboradorId = Long.parseLong(context.pathParam("id"));
-    List<FormaDeColaborarEnum> formasDeColaborar = context.bodyAsClass(FormasDTO.class).getFormas();
-    context.json(fachada.modificar(colaboradorId, formasDeColaborar));
+    try{
+      Long colaboradorId = fachada.buscarXId(Long.parseLong(context.pathParam("id"))).getId();
+      List<FormaDeColaborarEnum> formasDeColaborar = context.bodyAsClass(FormasDTO.class).getFormas();
+      context.json(fachada.modificar(colaboradorId, formasDeColaborar));
+    }
+    catch (Exception e) {
+      context.status(HttpStatus.BAD_REQUEST);
+      context.result("Error al modificar el colaborador: " + e.getMessage());
+    }
   }
 
   public void getPuntuacionColaborador(Context context) {
-    Long colaboradorId = Long.parseLong(context.pathParam("id"));
-    context.json(fachada.puntos(colaboradorId));
+    try {
+      Long colaboradorId = fachada.buscarXId(Long.parseLong(context.pathParam("id"))).getId();
+      context.json(fachada.puntos(colaboradorId));
+    }
+    catch (Exception e) {
+      context.status(HttpStatus.BAD_REQUEST);
+      context.result("Error al obtener la puntuación del colaborador: " + e.getMessage());
+    }
   }
 
 
   public void modificarPuntuacionMultiplicador(Context context) {
-    FormulaDTO formula = context.bodyAsClass(FormulaDTO.class);
-    fachada.actualizarPesosPuntos(
-        formula.getPesosDonados(),
-        formula.getViandasDistribuidas(),
-        formula.getViandasDonadas(),
-        formula.getTarjetasRepartidas(),
-        formula.getHeladerasActivas()
-    );
-    context.status(HttpStatus.OK);
+    try {
+      FormulaDTO formula = context.bodyAsClass(FormulaDTO.class);
+      fachada.actualizarPesosPuntos(
+          formula.getPesosDonados(),
+          formula.getViandasDistribuidas(),
+          formula.getViandasDonadas(),
+          formula.getTarjetasRepartidas(),
+          formula.getHeladerasActivas()
+      );
+      context.status(HttpStatus.OK);
+      context.result("Fórmula de puntuación modificada correctamente");
+      
+    } catch (Exception e) {
+      context.status(HttpStatus.BAD_REQUEST);
+      context.result("Error al modificar la fórmula de puntuación: " + e.getMessage());
+    }
   }
+
 }
