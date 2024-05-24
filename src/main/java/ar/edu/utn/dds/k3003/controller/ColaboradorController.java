@@ -76,7 +76,7 @@ public class ColaboradorController {
       );
       context.status(HttpStatus.OK);
       context.result("Fórmula de puntuación modificada correctamente");
-      
+
     } catch (Exception e) {
       context.status(HttpStatus.BAD_REQUEST);
       context.result("Error al modificar la fórmula de puntuación: " + e.getMessage());
